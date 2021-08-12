@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.devmam.logistica.domain.model.Cliente;
 import com.devmam.logistica.domain.repository.ClienteRepository;
+import com.devmam.logistica.domain.service.CatalogoClienteService;
 
 import lombok.AllArgsConstructor;
 
@@ -30,6 +31,8 @@ public class ClienteController {
 	
 	
 	private ClienteRepository clienteRepository;
+	
+	private CatalogoClienteService catalogoClienteService;
 	
 	
 	@GetMapping
@@ -49,7 +52,8 @@ public class ClienteController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Cliente adicionar(@Valid @RequestBody Cliente cliente ) {
-		return clienteRepository.save(cliente);
+		return catalogoClienteService.salvar(cliente);
+		//return clienteRepository.save(cliente);
 	}
 	
 	
@@ -61,8 +65,9 @@ public class ClienteController {
 		}
 		
 		
-		cliente.setId(clienteId);		
-		cliente =  clienteRepository.save(cliente);
+		cliente.setId(clienteId);
+		cliente = catalogoClienteService.salvar(cliente);
+		//cliente =  clienteRepository.save(cliente);
 		 
 		return ResponseEntity.ok(cliente);
 	}
@@ -74,7 +79,8 @@ public class ClienteController {
 			return ResponseEntity.notFound().build();
 		}
 		
-		clienteRepository.deleteById(clienteId);
+		catalogoClienteService.excluir(clienteId);
+		//clienteRepository.deleteById(clienteId);
 		
 		return ResponseEntity.noContent().build();
 			
